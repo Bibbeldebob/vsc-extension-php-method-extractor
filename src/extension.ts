@@ -16,6 +16,11 @@ export function activate(context: vscode.ExtensionContext) {
 
 async function extractMethod() {
     const editor = getEditor();
+
+    if (!editor || editor.document.languageId !== 'php') {
+        throw new Error('This command only works on PHP files.');
+    }
+
     const selection = getSelection(editor);
     const selected = getSelectedText(editor, selection);
 
