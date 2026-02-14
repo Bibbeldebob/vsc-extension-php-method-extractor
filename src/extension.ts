@@ -28,6 +28,10 @@ async function extractMethod() {
 
     methodName = normalizeMethodName(methodName);
 
+    if (methodName === '') {
+        throw new Error('Please enter a valid method name');
+    }
+
     const methodBuilder = new MethodBuilder();
     const method = methodBuilder.getMethod(methodName, selected);
 
@@ -78,12 +82,30 @@ function getEndPosition(editor: vscode.TextEditor): vscode.Position {
 }
 
 function normalizeMethodName(methodName: string): string {
-    if (methodName.includes(' ')) {
-        // TODO camelCase
-        methodName = methodName.replaceAll(' ', '');
+    let name = methodName.trim();
+
+    if (name.length === 0) {
+        return name;
     }
 
-    return methodName;
+    name = name.replace(/[^A-Za-z0-9_]+/g, ' ');
+
+    const parts = name.split(/[_\s]+/).filter(p => p.length > 0);
+
+    if (parts.length === 0) {
+        return '';
+    }
+
+    const first = parts[0].toLowerCase();
+    const rest = parts.slice(1).map(p => p.charAt(0).toUpperCase() + p.slice(1).toLowerCase());
+
+    let result = [first, ...rest].join('');
+
+    if (/^[0-9]/.test(result)) {
+        result = '_' + result;
+    }
+
+    return result;
 }
 
 export function deactivate() { }
