@@ -21,6 +21,12 @@
       }
     ],
     "menus": {
+      "editor/context": [
+        {
+          "command": "php-method-extractor.extractMethod",
+          "when": "editorLangId == php"
+        }
+      ],
       "commandPalette": [
         {
           "command": "php-method-extractor.extractMethod",
