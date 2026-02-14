@@ -14,8 +14,8 @@
   "contributes": {
     "commands": [
       {
-        "command": "php-method-extractor.helloWorld",
-        "title": "Hello World"
+        "command": "php-method-extractor.extractMethod",
+        "title": "Extract Method"
       }
     ]
   },
