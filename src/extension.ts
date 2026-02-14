@@ -7,6 +7,7 @@ export function activate(context: vscode.ExtensionContext) {
             await extractMethod();
         } catch (error: any) {
             vscode.window.showErrorMessage(error instanceof Error ? error.message : String(error));
+            console.error(error);
         }
     });
 
@@ -32,11 +33,10 @@ async function extractMethod() {
 
     await editor.edit(editBuilder => {
         editBuilder.insert(endPosition, '\n\n' + method);
-    });
-
-    await editor.edit(editBuilder => {
         editBuilder.delete(selection);
     });
+
+    await vscode.commands.executeCommand('editor.action.formatDocument');
 
     vscode.window.showInformationMessage(methodName + ' created successfully');
 }
@@ -58,7 +58,7 @@ function getEditor(): vscode.TextEditor {
     return editor;
 }
 
-function getSelection(editor: vscode.TextEditor) {
+function getSelection(editor: vscode.TextEditor): vscode.Selection {
     const selection = editor.selection;
 
     if (selection.isEmpty) {
