@@ -3,6 +3,10 @@
   "displayName": "PHP Method Extractor",
   "description": "This extension allows you to extract parts of your code into their own method.",
   "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Bibbeldebob/vsc-extension-php-method-extractor"
+  },
   "engines": {
     "vscode": "^1.109.0"
   },
