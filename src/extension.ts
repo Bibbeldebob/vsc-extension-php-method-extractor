@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import { MethodBuilder } from './Builder/MethodBuilder';
+import { MethodCallBuilder } from './Builder/MethodCallBuilder';
 
 export function activate(context: vscode.ExtensionContext) {
     const disposable = vscode.commands.registerCommand('php-method-extractor.extractMethod', async () => {
@@ -40,9 +41,13 @@ async function extractMethod() {
     const methodBuilder = new MethodBuilder();
     const method = methodBuilder.getMethod(methodName, selected);
 
+    const methodCallBuilder = new MethodCallBuilder();
+    const methodCall = methodCallBuilder.getMethodCall(methodName);
+
     await editor.edit(editBuilder => {
         editBuilder.insert(endPosition, '\n\n' + method);
         editBuilder.delete(selection);
+        editBuilder.insert(selection.end, methodCall);
     });
 
     await vscode.commands.executeCommand('editor.action.formatDocument');
