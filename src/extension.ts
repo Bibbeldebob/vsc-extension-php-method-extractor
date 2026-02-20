@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
-import { MethodBuilder } from './Builder/MethodBuilder';
-import { MethodCallBuilder } from './Builder/MethodCallBuilder';
+import { MethodBuilder } from './Builder/File/MethodBuilder';
+import { MethodCallBuilder } from './Builder/File/MethodCallBuilder';
 
 export function activate(context: vscode.ExtensionContext) {
     const disposable = vscode.commands.registerCommand('php-method-extractor.extractMethod', async () => {
