@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import { MethodBuilder } from './Builder/File/MethodBuilder';
 import { MethodCallBuilder } from './Builder/File/MethodCallBuilder';
+import { FileContextBuilder } from './Builder/ValueObject/FileContextBuilder';
 
 export function activate(context: vscode.ExtensionContext) {
     const disposable = vscode.commands.registerCommand('php-method-extractor.extractMethod', async () => {
@@ -37,6 +38,9 @@ async function extractMethod() {
     if (methodName === '') {
         throw new Error('Please enter a valid method name');
     }
+
+    const fileContextBuilder = new FileContextBuilder();
+    const fileContext = fileContextBuilder.getFileContext(editor);
 
     const methodBuilder = new MethodBuilder();
     const method = methodBuilder.getMethod(methodName, selected);
