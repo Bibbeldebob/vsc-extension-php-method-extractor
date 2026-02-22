@@ -42,10 +42,10 @@ async function extractMethod() {
     const fileContextBuilder = new FileContextBuilder();
     const fileContext = fileContextBuilder.getFileContext(editor);
 
-    const methodBuilder = new MethodBuilder();
+    const methodBuilder = new MethodBuilder(fileContext);
     const method = methodBuilder.getMethod(methodName, selected);
 
-    const methodCallBuilder = new MethodCallBuilder();
+    const methodCallBuilder = new MethodCallBuilder(fileContext);
     const methodCall = methodCallBuilder.getMethodCall(methodName);
 
     await editor.edit(editBuilder => {
