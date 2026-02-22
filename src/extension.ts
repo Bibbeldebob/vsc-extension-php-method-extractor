@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
-import { MethodBuilder } from './Builder/MethodBuilder';
-import { MethodCallBuilder } from './Builder/MethodCallBuilder';
+import { MethodBuilder } from './Builder/File/MethodBuilder';
+import { MethodCallBuilder } from './Builder/File/MethodCallBuilder';
+import { FileContextBuilder } from './Builder/ValueObject/FileContextBuilder';
 
 export function activate(context: vscode.ExtensionContext) {
     const disposable = vscode.commands.registerCommand('php-method-extractor.extractMethod', async () => {
@@ -27,7 +28,13 @@ async function extractMethod() {
 
     const endPosition = getEndPosition(editor);
 
-    let methodName = await vscode.window.showInputBox();
+    const inputBoxOptions: vscode.InputBoxOptions = {
+        'prompt': 'Enter the new method name',
+        'placeHolder': 'New Methodname',
+        'title': 'New Methodname',
+    };
+
+    let methodName = await vscode.window.showInputBox(inputBoxOptions);
     if (methodName === undefined || methodName === '') {
         throw new Error('Please enter a method name');
     }
@@ -38,10 +45,13 @@ async function extractMethod() {
         throw new Error('Please enter a valid method name');
     }
 
-    const methodBuilder = new MethodBuilder();
+    const fileContextBuilder = new FileContextBuilder();
+    const fileContext = fileContextBuilder.getFileContext(editor);
+
+    const methodBuilder = new MethodBuilder(fileContext);
     const method = methodBuilder.getMethod(methodName, selected);
 
-    const methodCallBuilder = new MethodCallBuilder();
+    const methodCallBuilder = new MethodCallBuilder(fileContext);
     const methodCall = methodCallBuilder.getMethodCall(methodName);
 
     await editor.edit(editBuilder => {
