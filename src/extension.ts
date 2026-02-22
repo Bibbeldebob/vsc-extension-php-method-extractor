@@ -28,7 +28,13 @@ async function extractMethod() {
 
     const endPosition = getEndPosition(editor);
 
-    let methodName = await vscode.window.showInputBox();
+    const inputBoxOptions: vscode.InputBoxOptions = {
+        'prompt': 'Enter the new method name',
+        'placeHolder': 'New Methodname',
+        'title': 'New Methodname',
+    };
+
+    let methodName = await vscode.window.showInputBox(inputBoxOptions);
     if (methodName === undefined || methodName === '') {
         throw new Error('Please enter a method name');
     }
